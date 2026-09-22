@@ -111,6 +111,48 @@
   .contrib-grid i.l4 { background: var(--acc); }
   .contrib-foot { display: flex; justify-content: space-between; color: var(--dim); font-size: .8rem; margin-top: .7rem; }
 
+  /* about + skills */
+  .about-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: start; }
+  @media (max-width: 800px) { .about-grid { grid-template-columns: 1fr; gap: 2rem; } }
+  .about-txt p { color: var(--dim); margin-bottom: 1rem; }
+  .about-txt p b { color: var(--fg); }
+  .open-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: rgba(94,234,212,.1); border: 1px solid rgba(94,234,212,.35);
+    color: var(--acc); padding: .4rem .9rem; border-radius: 99px; font-size: .82rem; font-weight: 600;
+  }
+  .open-badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--acc); animation: pulse 1.6s infinite; }
+  @keyframes pulse { 50% { opacity: .4; } }
+
+  .skill-group { margin-bottom: 1.3rem; }
+  .skill-group h4 { font-family: var(--mono); font-size: .8rem; color: var(--acc); margin-bottom: .6rem; }
+  .pills { display: flex; flex-wrap: wrap; gap: .45rem; }
+  .pill {
+    background: var(--card); border: 1px solid var(--border); color: var(--fg);
+    padding: .35rem .8rem; border-radius: 8px; font-size: .84rem; transition: all .2s;
+  }
+  .pill:hover { border-color: var(--acc); transform: translateY(-2px); }
+  .pill.core { border-color: rgba(94,234,212,.5); color: var(--acc); }
+
+  /* timeline */
+  .timeline { position: relative; margin-top: 1rem; padding-left: 1.4rem; }
+  .timeline::before { content: ""; position: absolute; left: 4px; top: 6px; bottom: 6px; width: 2px; background: var(--border); }
+  .titem { position: relative; padding-bottom: 1.4rem; }
+  .titem:last-child { padding-bottom: 0; }
+  .titem::before {
+    content: ""; position: absolute; left: -1.4rem; top: 7px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--bg); border: 2px solid var(--acc);
+  }
+  .titem .when { font-family: var(--mono); font-size: .75rem; color: var(--acc); }
+  .titem .what { font-weight: 600; margin: .15rem 0; }
+  .titem .where { color: var(--dim); font-size: .87rem; }
+
+  /* contact */
+  .contact { text-align: center; padding: 5rem 1.5rem; }
+  .contact h2 { font-size: clamp(1.6rem, 4vw, 2.3rem); margin-bottom: .7rem; }
+  .contact p { color: var(--dim); max-width: 32rem; margin: 0 auto 1.8rem; }
+
   /* footer */
   footer { border-top: 1px solid var(--border); padding: 2rem 0 3rem; color: var(--dim); font-size: .85rem; }
   footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
@@ -126,6 +168,8 @@
   <div class="wrap">
     <a class="logo" href="#">prayoga<span>.dev</span></a>
     <ul>
+      <li><a href="#about">Tentang</a></li>
+      <li><a href="#skills">Skills</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#activity">Activity</a></li>
       <li><a href="https://github.com/agoyeeee">GitHub</a></li>
@@ -149,6 +193,65 @@
     </div>
     <div class="stats" id="stats"></div>
   </header>
+
+  <section id="about">
+    <div class="sec-head">
+      <div class="k">~/about</div>
+      <h2>Tentang Saya</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-txt">
+        <span class="open-badge">Open to work — fresh graduate / internship friendly</span>
+        <p>Saya <b>Prayoga Putra</b>, developer berbasis di Surakarta yang fokus pada <b>pengembangan web end-to-end</b>: dari desain antarmuka, API, sampai deployment. Terbiasa membangun aplikasi dengan <b>TypeScript, Vue, dan PHP/Laravel</b>, plus gemar oprek server, otomasi, dan tooling buatan sendiri.</p>
+        <p>Beberapa hal yang saya bangun: sistem CRM internal, aplikasi manajemen apotek, dashboard admin, dan tooling infrastruktur di server pribadi. Saya percaya kode yang baik itu <b>simpel, idiomatik, dan bisa dirawat orang lain</b>.</p>
+        <div class="timeline">
+          <div class="titem">
+            <div class="when">2022 — sekarang</div>
+            <div class="what">S1 — Universitas Sebelas Maret</div>
+            <div class="where">Surakarta, Indonesia · pengembangan web & software engineering</div>
+          </div>
+          <div class="titem">
+            <div class="when">2023 — sekarang</div>
+            <div class="what">Freelance & Proyek Pribadi</div>
+            <div class="where">Web apps, tooling infra, open source — 14+ repositori publik</div>
+          </div>
+          <div class="titem">
+            <div class="when">Sekarang</div>
+            <div class="what">Terbuka untuk kesempatan kerja & kolaborasi</div>
+            <div class="where">Fullstack / frontend developer — remote maupun on-site</div>
+          </div>
+        </div>
+      </div>
+      <div id="skills">
+        <div class="skill-group">
+          <h4>// bahasa & framework</h4>
+          <div class="pills">
+            <span class="pill core">TypeScript</span><span class="pill core">Vue</span><span class="pill core">PHP</span>
+            <span class="pill core">Laravel</span><span class="pill">JavaScript</span><span class="pill">HTML</span><span class="pill">CSS</span><span class="pill">Blade</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h4>// infra & ops</h4>
+          <div class="pills">
+            <span class="pill core">Linux</span><span class="pill core">Git</span>
+            <span class="pill">Bash</span><span class="pill">Nginx</span><span class="pill">SSH</span><span class="pill">Vercel</span><span class="pill">GitHub Actions</span><span class="pill">Docker</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h4>// data & tools</h4>
+          <div class="pills">
+            <span class="pill">MySQL</span><span class="pill">REST API</span><span class="pill">Vite</span><span class="pill">Tailwind</span><span class="pill">Node.js</span><span class="pill">Figma</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h4>// soft skills</h4>
+          <div class="pills">
+            <span class="pill">Problem Solving</span><span class="pill">Self-taught & cepat belajar</span><span class="pill">Komunikasi tim</span><span class="pill">Manajemen waktu</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section id="projects">
     <div class="sec-head">
@@ -176,6 +279,17 @@
         <i style="width:12px;height:12px;border-radius:2px;background:rgba(94,234,212,.65)"></i>
         <i style="width:12px;height:12px;border-radius:2px;background:var(--acc)"></i>
       </span><span>More</span></div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="k" style="font-family:var(--mono);color:var(--acc);font-size:.85rem">// contact</div>
+    <h2>Yuk ngobrol — saya siap dikontak</h2>
+    <p>Butuh developer yang bisa gerak cepat dari desain sampai deploy? Kirim email atau cek GitHub saya. Respon < 24 jam.</p>
+    <div class="cta" style="justify-content:center">
+      <a class="btn primary" href="mailto:prayogaputra70@gmail.com">Email Saya</a>
+      <a class="btn" href="https://github.com/agoyeeee">GitHub — agoyeeee</a>
+      <a class="btn" href="https://www.linkedin.com/">LinkedIn</a>
     </div>
   </section>
 

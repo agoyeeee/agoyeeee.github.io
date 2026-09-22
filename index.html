@@ -378,35 +378,28 @@ async function gh(url, cacheKey) {
     grid.innerHTML = `<div class="skel">* gagal fetch repo — cek koneksi atau GitHub API rate limit.</div>`;
   }
 
-  /* contribution grid (365 hari terakhir, dari public events) */
+  /* contribution grid 365 hari — data resmi dari profil GitHub (ghchart) */
   try {
-    const events = [];
-    for (let p = 1; p <= 3; p++) {
-      const ev = await fetch(`https://api.github.com/users/${USER}/events/public?per_page=100&page=${p}`).then(r => r.ok ? r.json() : []);
-      events.push(...ev);
-      if (ev.length < 100) break;
-    }
-    const byDay = {};
-    events.forEach(e => {
-      const day = e.created_at.slice(0, 10);
-      const w = { PushEvent: e.payload?.commits?.length || 1, CreateEvent: 1, PullRequestEvent: 3, IssuesEvent: 2, WatchEvent: 0 }[e.type] || 0;
-      byDay[day] = (byDay[day] || 0) + w;
-    });
+    const svgTxt = await fetch(`https://ghchart.rshah.org/5eead4/${USER}`).then(r => r.text());
+    const doc = new DOMParser().parseFromString(svgTxt, "image/svg+xml");
     const grid2 = document.getElementById("contrib");
-    const today = new Date(); today.setHours(0, 0, 0, 0);
-    let html = "";
-    const dow = today.getDay();
-    for (let d = 0; d < 52 * 7; d++) {
-      const dt = new Date(today); dt.setDate(dt.getDate() - (51 * 7 + (6 - dow)) + d);
-      const key = dt.toISOString().slice(0, 10);
-      if (dt > today) { html += "<i style='opacity:0'></i>"; continue; }
-      const n = byDay[key] || 0;
-      const lvl = n === 0 ? "" : n < 2 ? "l1" : n < 4 ? "l2" : n < 7 ? "l3" : "l4";
-      html += `<i class="${lvl}" title="${key}: ${n} kontribusi"></i>`;
-    }
-    grid2.innerHTML = html;
+    /* ghchart: tiap rect = 1 hari, kolom per minggu — remap warna ke tema */
+    const map = { "#ebedf0": 0, "#eeeeee": 0, "#eeeeEE": 0, "#abffff": 1, "#91ffff": 2, "#767676": 3, "#4bbbaa": 4, "#5eead4": 4 };
+    const cells = [];
+    let cur = [];
+    let lastX = null;
+    doc.querySelectorAll("rect").forEach(r => {
+      const x = r.getAttribute("x");
+      if (lastX !== null && x !== lastX) { cells.push(cur); cur = []; }
+      lastX = x;
+      const fill = (r.getAttribute("style") || r.getAttribute("fill") || "").match(/fill:\s*(#[0-9a-f]+)/i)?.[1]?.toLowerCase();
+      const lvl = map[fill] ?? 0;
+      cur.push(`<i class="${lvl ? "l" + lvl : ""}" title="${r.getAttribute("data-date") || ""}: level ${lvl}"></i>`);
+    });
+    cells.push(cur);
+    grid2.innerHTML = cells.map(w => w.join("")).join("");
     grid2.scrollLeft = grid2.scrollWidth;
-  } catch {}
+  } catch (e) { document.getElementById("contrib").innerHTML = "<i></i>".repeat(7 * 52); }
 })();
 </script>
 </body>

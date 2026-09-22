@@ -3,39 +3,297 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>agoyeeee</title>
+<meta name="description" content="Prayoga Putra — Software Developer, Surakarta Indonesia. Portofolio & proyek open-source.">
+<title>Prayoga Putra — Portfolio</title>
 <style>
-  :root { --bg: #0d1117; --fg: #e6edf3; --dim: #8b949e; --acc: #58a6ff; }
-  * { margin: 0; box-sizing: border-box; }
-  body {
-    background: var(--bg); color: var(--fg);
-    font: 16px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
-    min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    padding: 2rem;
+  :root {
+    --bg: #0b0e14; --bg2: #11151f; --card: #151a26; --border: #232a3a;
+    --fg: #e6eaf2; --dim: #98a2b3; --acc: #5eead4; --acc2: #818cf8;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    --sans: "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
   }
-  main { max-width: 40rem; }
-  h1 { font-size: 1.8rem; }
-  h1 span { color: var(--acc); }
-  p { color: var(--dim); margin: .8rem 0; }
-  ul { list-style: none; padding: 0; margin: 1.2rem 0; }
-  li { margin: .4rem 0; }
-  li::before { content: "> "; color: var(--acc); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--sans); line-height: 1.6; }
+  ::selection { background: var(--acc); color: var(--bg); }
   a { color: var(--acc); text-decoration: none; }
   a:hover { text-decoration: underline; }
-  footer { margin-top: 2rem; color: var(--dim); font-size: .85rem; }
+
+  /* ambient glow */
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(600px 400px at 85% -10%, rgba(94,234,212,.08), transparent 60%),
+      radial-gradient(700px 500px at 0% 110%, rgba(129,140,248,.08), transparent 60%);
+  }
+  .wrap { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+
+  /* nav */
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(11,14,20,.8); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .logo { font-family: var(--mono); font-weight: 700; color: var(--fg); }
+  .logo span { color: var(--acc); }
+  nav ul { display: flex; gap: 1.5rem; list-style: none; }
+  nav a { color: var(--dim); font-size: .9rem; font-weight: 500; }
+  nav a:hover { color: var(--fg); text-decoration: none; }
+  @media (max-width: 560px) { nav ul { display: none; } }
+
+  /* hero */
+  header { padding: 5rem 0 4rem; }
+  .eyebrow { font-family: var(--mono); color: var(--acc); font-size: .85rem; letter-spacing: .1em; }
+  h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); line-height: 1.15; margin: .5rem 0 1rem; letter-spacing: -.02em; }
+  h1 .grad {
+    background: linear-gradient(90deg, var(--acc), var(--acc2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero-sub { color: var(--dim); max-width: 34rem; font-size: 1.05rem; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 1rem 1.75rem; margin-top: 1.5rem; color: var(--dim); font-size: .9rem; }
+  .hero-meta span { display: inline-flex; align-items: center; gap: .45rem; }
+  .hero-meta svg { width: 15px; height: 15px; stroke: var(--acc); }
+  .cta { margin-top: 2rem; display: flex; gap: .8rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .7rem 1.3rem; border-radius: 10px; font-size: .92rem; font-weight: 600;
+    border: 1px solid var(--border); transition: all .2s;
+  }
+  .btn:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--acc); }
+  .btn.primary { background: var(--acc); color: var(--bg); border-color: var(--acc); }
+  .btn.primary:hover { box-shadow: 0 8px 24px rgba(94,234,212,.25); }
+  .btn svg { width: 16px; height: 16px; }
+
+  /* stats */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 1rem; margin: 3rem 0 0; }
+  .stat { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.1rem 1.3rem; }
+  .stat b { display: block; font-size: 1.6rem; font-family: var(--mono); color: var(--acc); }
+  .stat small { color: var(--dim); font-size: .8rem; }
+
+  /* sections */
+  section { padding: 4rem 0; }
+  .sec-head { margin-bottom: 2rem; }
+  .sec-head .k { font-family: var(--mono); color: var(--acc); font-size: .85rem; }
+  h2 { font-size: clamp(1.5rem, 3.5vw, 2rem); letter-spacing: -.01em; margin-top: .3rem; }
+
+  /* repos */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 1rem; }
+  .repo {
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+    padding: 1.25rem; display: flex; flex-direction: column; gap: .5rem;
+    transition: border-color .2s, transform .2s, box-shadow .2s;
+  }
+  .repo:hover { border-color: rgba(94,234,212,.5); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+  .repo h3 { font-size: 1rem; font-family: var(--mono); }
+  .repo h3 a { color: var(--fg); }
+  .repo h3 a:hover { color: var(--acc); text-decoration: none; }
+  .repo .desc { color: var(--dim); font-size: .88rem; flex: 1; }
+  .repo .foot { display: flex; align-items: center; gap: 1rem; font-size: .8rem; color: var(--dim); }
+  .lang { display: inline-flex; align-items: center; gap: .4rem; }
+  .lang i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .repo .foot svg { width: 13px; height: 13px; vertical-align: -2px; margin-right: .25rem; }
+
+  /* lang bars */
+  .langs { margin-top: 1.5rem; }
+  .bar { display: flex; height: 10px; border-radius: 99px; overflow: hidden; background: var(--bg2); }
+  .bar i { display: block; height: 100%; }
+  .legend { display: flex; flex-wrap: wrap; gap: .5rem 1.2rem; margin-top: .8rem; font-size: .82rem; color: var(--dim); }
+  .legend .lang i { width: 9px; height: 9px; }
+
+  /* activity */
+  .contrib-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; }
+  .contrib-grid { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 12px); gap: 3px; overflow-x: auto; padding-bottom: 4px; }
+  .contrib-grid i { width: 12px; height: 12px; border-radius: 2px; background: #1c2230; }
+  .contrib-grid i.l1 { background: rgba(94,234,212,.25); }
+  .contrib-grid i.l2 { background: rgba(94,234,212,.45); }
+  .contrib-grid i.l3 { background: rgba(94,234,212,.65); }
+  .contrib-grid i.l4 { background: var(--acc); }
+  .contrib-foot { display: flex; justify-content: space-between; color: var(--dim); font-size: .8rem; margin-top: .7rem; }
+
+  /* footer */
+  footer { border-top: 1px solid var(--border); padding: 2rem 0 3rem; color: var(--dim); font-size: .85rem; }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+  footer a { color: var(--dim); } footer a:hover { color: var(--acc); }
+
+  .skel { color: var(--dim); font-family: var(--mono); font-size: .85rem; padding: 2rem 0; }
+  .fade { animation: fade .5s ease both; }
+  @keyframes fade { from { opacity: 0; transform: translateY(8px); } }
 </style>
 </head>
 <body>
-<main>
-  <h1>halo, gw <span>agoyeeee</span></h1>
-  <p>dev & infra. seneng oprek server, otomasi, dan tooling buatan sendiri.</p>
-  <ul>
-    <li>linux & server ops</li>
-    <li>automation / scripting</li>
-    <li>self-hosted & homelab</li>
-  </ul>
-  <p>kontak: <a href="https://github.com/agoyeeee">github.com/agoyeeee</a></p>
-  <footer>&copy; 2026 agoyeeee</footer>
-</main>
+<nav>
+  <div class="wrap">
+    <a class="logo" href="#">prayoga<span>.dev</span></a>
+    <ul>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#activity">Activity</a></li>
+      <li><a href="https://github.com/agoyeeee">GitHub</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">// hello world</div>
+    <h1>Prayoga Putra —<br><span class="grad">Software Developer</span></h1>
+    <p class="hero-sub">Mahasiswa & developer yang mendalami pengembangan web — membangun aplikasi, eksperimen kode, dan tooling infrastruktur.</p>
+    <div class="hero-meta">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Surakarta, Indonesia</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg><a id="email-link" href="mailto:prayogaputra70@gmail.com">prayogaputra70@gmail.com</a></span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7L12.5 18.5"/></svg><a href="http://agoyeeee-portfolio.vercel.app/">agoyeeee-portfolio.vercel.app</a></span>
+    </div>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/agoyeeee"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.4 2.9 8.2 6.8 9.5.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.6 0 0 .8-.3 2.7 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.3.2 2.3.1 2.6.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .3.3.6.9.6 1.8v2.7c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg>GitHub Profile</a>
+      <a class="btn" href="#projects">Lihat Projects ↓</a>
+    </div>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <section id="projects">
+    <div class="sec-head">
+      <div class="k">~/projects</div>
+      <h2>Projects & Repositori</h2>
+    </div>
+    <div class="grid" id="repos"><div class="skel">$ fetching repositories…</div></div>
+    <div class="langs">
+      <div class="bar" id="langbar"></div>
+      <div class="legend" id="langlegend"></div>
+    </div>
+  </section>
+
+  <section id="activity">
+    <div class="sec-head">
+      <div class="k">~/activity</div>
+      <h2>Kontribusi Tahun Ini</h2>
+    </div>
+    <div class="contrib-wrap">
+      <div class="contrib-grid" id="contrib"></div>
+      <div class="contrib-foot"><span>Less</span><span style="display:flex;gap:3px;align-items:center">
+        <i style="width:12px;height:12px;border-radius:2px;background:#1c2230"></i>
+        <i style="width:12px;height:12px;border-radius:2px;background:rgba(94,234,212,.25)"></i>
+        <i style="width:12px;height:12px;border-radius:2px;background:rgba(94,234,212,.45)"></i>
+        <i style="width:12px;height:12px;border-radius:2px;background:rgba(94,234,212,.65)"></i>
+        <i style="width:12px;height:12px;border-radius:2px;background:var(--acc)"></i>
+      </span><span>More</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span>&copy; <span id="year"></span> Prayoga Putra</span>
+      <span>built with vanilla html — data live dari <a href="https://api.github.com/users/agoyeeee">GitHub API</a></span>
+    </div>
+  </footer>
+</div>
+
+<script>
+const USER = "agoyeeee";
+const API = "https://api.github.com/users/" + USER;
+const REPO_API = "https://api.github.com/users/" + USER + "/repos?per_page=100&sort=pushed";
+const LANG_COLORS = {
+  TypeScript: "#3178c6", JavaScript: "#f1e05a", Vue: "#41b883", PHP: "#4F5D95",
+  HTML: "#e34c26", CSS: "#563d7c", Blade: "#f7523f", Python: "#3572A5",
+  Shell: "#89e051", Go: "#00ADD8", Rust: "#dea584", Java: "#b07219",
+  SCSS: "#c6538c", C: "#555555", "C++": "#f34b7d", Dart: "#00B4AB",
+};
+
+/* fetch dgn 6-jam localStorage cache (anti rate-limit) */
+async function gh(url, cacheKey) {
+  try {
+    const cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
+    if (cached && Date.now() - cached.t < 6 * 3600e3) return cached.d;
+  } catch {}
+  const res = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  const d = await res.json();
+  try { localStorage.setItem(cacheKey, JSON.stringify({ t: Date.now(), d })); } catch {}
+  return d;
+}
+
+(async () => {
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  /* profile + stats */
+  let user = null;
+  try { user = await gh(API, "gh_user"); } catch {}
+  if (user) {
+    document.querySelectorAll("[data-user-name]").forEach(e => e.textContent = user.name || USER);
+    if (user.bio) document.querySelector(".hero-sub").textContent = user.bio;
+    if (user.location) document.querySelector(".hero-meta span:first-child").lastChild.textContent = user.location;
+    if (user.blog) document.querySelectorAll('a[href*="vercel.app"]').forEach(a => a.href = "https://" + user.blog.replace(/^https?:\/\//, ""));
+    const stars = (await gh(REPO_API, "gh_repos")).filter(r => !r.fork).reduce((s, r) => s + r.stargazers_count, 0);
+    document.getElementById("stats").innerHTML = [
+      [user.public_repos, "Public Repos"],
+      [stars, "Stars Earned"],
+      [user.followers, "Followers"],
+      [user.following, "Following"],
+      [new Date(user.created_at).getFullYear(), "Joined GitHub"],
+    ].map(([v, l]) => `<div class="stat fade"><b>${v}</b><small>${l}</small></div>`).join("");
+  }
+
+  /* repos */
+  let repos = [];
+  try { repos = await gh(REPO_API, "gh_repos"); } catch {}
+  const grid = document.getElementById("repos");
+  if (repos.length) {
+    repos = repos.filter(r => !r.fork && r.name !== USER + ".github.io");
+    repos.sort((a, b) => b.stargazers_count - a.stargazers_count || new Date(b.pushed_at) - new Date(a.pushed_at));
+    grid.innerHTML = repos.map((r, i) => `
+      <article class="repo fade" style="animation-delay:${i * 60}ms">
+        <h3><a href="${r.html_url}" target="_blank" rel="noopener">${r.name}</a></h3>
+        <p class="desc">${r.description || "No description provided."}</p>
+        <div class="foot">
+          ${r.language ? `<span class="lang"><i style="background:${LANG_COLORS[r.language] || "#8b949e"}"></i>${r.language}</span>` : ""}
+          <span><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 .2a4.9 4.9 0 0 0-1.5 9.6c.2 0 .3-.2.3-.4v-1.4c-1.4.3-1.7-.6-1.7-.6-.2-.5-.5-.6-.5-.6-.4-.3 0-.3 0-.3.5 0 .7.5.7.5.4.7 1.1.5 1.3.4 0-.3.2-.5.3-.6-1.1-.1-2.3-.6-2.3-2.5 0-.5.2-1 .5-1.3 0-.1-.2-.6 0-1.3 0 0 .4-.1 1.3.5a4.6 4.6 0 0 1 2.4 0c.9-.6 1.3-.5 1.3-.5.2.7 0 1.2.1 1.3.3.3.5.8.5 1.3 0 1.9-1.2 2.4-2.3 2.5.2.1.4.5.4 1v1.4c0 .2.1.4.3.4A4.9 4.9 0 0 0 8 .2z"/></svg>${r.stargazers_count}</span>
+          <span>${new Date(r.pushed_at).toLocaleDateString("id-ID", { month: "short", year: "numeric" })}</span>
+        </div>
+      </article>`).join("");
+
+    /* language distribution */
+    const counts = {};
+    repos.forEach(r => { if (r.language) counts[r.language] = (counts[r.language] || 0) + 1; });
+    const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    const total = entries.reduce((s, [, n]) => s + n, 0);
+    document.getElementById("langbar").innerHTML = entries
+      .map(([l, n]) => `<i style="width:${(n / total * 100).toFixed(1)}%;background:${LANG_COLORS[l] || "#8b949e"}"></i>`).join("");
+    document.getElementById("langlegend").innerHTML = entries
+      .map(([l, n]) => `<span class="lang"><i style="background:${LANG_COLORS[l] || "#8b949e"}"></i>${l} ${(n / total * 100).toFixed(0)}%</span>`).join("");
+  } else {
+    grid.innerHTML = `<div class="skel">* gagal fetch repo — cek koneksi atau GitHub API rate limit.</div>`;
+  }
+
+  /* contribution grid (365 hari terakhir, dari public events) */
+  try {
+    const events = [];
+    for (let p = 1; p <= 3; p++) {
+      const ev = await fetch(`https://api.github.com/users/${USER}/events/public?per_page=100&page=${p}`).then(r => r.ok ? r.json() : []);
+      events.push(...ev);
+      if (ev.length < 100) break;
+    }
+    const byDay = {};
+    events.forEach(e => {
+      const day = e.created_at.slice(0, 10);
+      const w = { PushEvent: e.payload?.commits?.length || 1, CreateEvent: 1, PullRequestEvent: 3, IssuesEvent: 2, WatchEvent: 0 }[e.type] || 0;
+      byDay[day] = (byDay[day] || 0) + w;
+    });
+    const grid2 = document.getElementById("contrib");
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    let html = "";
+    const dow = today.getDay();
+    for (let d = 0; d < 52 * 7; d++) {
+      const dt = new Date(today); dt.setDate(dt.getDate() - (51 * 7 + (6 - dow)) + d);
+      const key = dt.toISOString().slice(0, 10);
+      if (dt > today) { html += "<i style='opacity:0'></i>"; continue; }
+      const n = byDay[key] || 0;
+      const lvl = n === 0 ? "" : n < 2 ? "l1" : n < 4 ? "l2" : n < 7 ? "l3" : "l4";
+      html += `<i class="${lvl}" title="${key}: ${n} kontribusi"></i>`;
+    }
+    grid2.innerHTML = html;
+    grid2.scrollLeft = grid2.scrollWidth;
+  } catch {}
+})();
+</script>
 </body>
 </html>
